@@ -17,8 +17,12 @@ import pathlib
 
 import sgtk.templatekey
 
-from PySide2 import QtCore
-from PySide2.QtWidgets import QMessageBox
+try:
+    from PySide2 import QtCore
+    from PySide2.QtWidgets import QMessageBox
+except ModuleNotFoundError:
+    from PySide6 import QtCore
+    from PySide6.QtWidgets import QMessageBox
 
 
 class MultiReviewSubmissionApp(sgtk.platform.Application):

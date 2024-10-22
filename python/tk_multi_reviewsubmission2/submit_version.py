@@ -23,7 +23,11 @@
 import os
 
 import sgtk
-from PySide2 import QtCore
+
+try:
+    from PySide2 import QtCore
+except ModuleNotFoundError:
+    from PySide6 import QtCore
 
 
 class SubmitVersion(object):
@@ -46,12 +50,23 @@ class SubmitVersion(object):
         ctx = self.app.context
 
         # Update data object for submission
-        data = {"code": name, "sg_status_list": "rev", "entity": ctx.entity, "sg_task": ctx.task,
-                "sg_first_frame": self.frame_range[0], "sg_last_frame": self.frame_range[1],
-                "sg_frames_have_slate": False, "created_by": user, "user": user, "description": self.description,
-                "sg_movie_has_slate": True, "project": ctx.project,
-                "frame_count": self.frame_range[1] - self.frame_range[0] + 1,
-                "frame_range": "%s-%s" % (self.frame_range[0], self.frame_range[1]), "sg_path_to_movie": self.file}
+        data = {
+            "code": name,
+            "sg_status_list": "rev",
+            "entity": ctx.entity,
+            "sg_task": ctx.task,
+            "sg_first_frame": self.frame_range[0],
+            "sg_last_frame": self.frame_range[1],
+            "sg_frames_have_slate": False,
+            "created_by": user,
+            "user": user,
+            "description": self.description,
+            "sg_movie_has_slate": True,
+            "project": ctx.project,
+            "frame_count": self.frame_range[1] - self.frame_range[0] + 1,
+            "frame_range": "%s-%s" % (self.frame_range[0], self.frame_range[1]),
+            "sg_path_to_movie": self.file,
+        }
 
         # Calculate frame count and range and update accordingly
 

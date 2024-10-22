@@ -1,6 +1,15 @@
 import sgtk
-import shiboken2
-from PySide2 import QtWidgets
+
+try:
+    import shiboken2 as shiboken
+except ModuleNotFoundError:
+    import shiboken6 as shiboken
+
+try:
+    from PySide2 import QtWidgets
+except ModuleNotFoundError:
+    from PySide6 import QtWidgets
+
 import maya.OpenMayaUI as apiUI
 import maya.cmds as cmds
 import maya.mel as mel
@@ -17,9 +26,10 @@ class Helper(HookBaseClass):
         """
         Get the main window of the application
         """
+
         ptr = apiUI.MQtUtil.mainWindow()
         if ptr is not None:
-            return shiboken2.wrapInstance(int(ptr), QtWidgets.QWidget)
+            return shiboken.wrapInstance(int(ptr), QtWidgets.QWidget)
 
     def get_file_path(self):
         """
@@ -34,7 +44,7 @@ class Helper(HookBaseClass):
         return {
             "cut_in": cmds.playbackOptions(query=True, animationStartTime=True),
             "cut_out": cmds.playbackOptions(query=True, animationEndTime=True),
-            "fps": mel.eval('currentTimeUnitToFPS'),
+            "fps": mel.eval("currentTimeUnitToFPS"),
         }
 
     def save_file(self, path):
@@ -46,4 +56,3 @@ class Helper(HookBaseClass):
         if path is not None:
             cmds.file(rename=path)
         cmds.file(save=True)
-

@@ -23,11 +23,13 @@
 import os
 import pathlib
 import tempfile
-import time
 
-from PySide2 import QtGui
-from PySide2 import QtWidgets
-from PySide2.QtWidgets import QMessageBox
+try:
+    from PySide2 import QtGui, QtWidgets
+    from PySide2.QtWidgets import QMessageBox
+except ModuleNotFoundError:
+    from PySide6 import QtGui, QtWidgets
+    from PySide6.QtWidgets import QMessageBox
 
 from .create_slate import CreateSlate
 from .submit_version import SubmitVersion
